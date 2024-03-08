@@ -15,32 +15,40 @@ class Cell:
         self.__walls = [True, True, True, True]
         self.__location = location
         self.__window = window
-        self.__scale = scale
+        self.__rescale__(scale)
+
+    def __repr__(self) -> str:
+        return f"Cell({self.__ul},{self.__lr})"
+
+
+    def __rescale__(self,scale):
+        self.__ul = Point(
+            self.__location.x * scale, 
+            self.__location.y * scale
+        )
+        self.__lr = Point(
+            (self.__location.x * scale) + scale, 
+            (self.__location.y * scale) + scale
+        )
 
     def draw(self):
-        scale = self.__scale
-        offset_x = self.__location.x * self.__scale
-        offset_y = self.__location.y * self.__scale
+        ul = self.__ul
+        lr = self.__lr
 
         if self.__walls[Wall.TOP.value]:
-            line = Line(
-                    Point(offset_x, offset_y), 
-                    Point(offset_x + scale, offset_y))
+            line = Line(Point(ul.x, ul.y), Point(lr.x, ul.y))
             self.__window.draw_line(line, "black")
+
         if self.__walls[Wall.RIGHT.value]:
-            line = Line(
-                    Point(offset_x + scale, offset_y), 
-                    Point(offset_x + scale, offset_y + scale))
+            line = Line(Point(lr.x, ul.y), Point(lr.x, lr.y))
             self.__window.draw_line(line, "black")
+
         if self.__walls[Wall.BOTTOM.value]:
-            line = Line(
-                    Point(offset_x + scale, offset_y + scale), 
-                    Point(offset_x, offset_y + scale))
+            line = Line( Point(ul.x, lr.y), Point(lr.x, lr.y))
             self.__window.draw_line(line, "black")
+
         if self.__walls[Wall.LEFT.value]:
-            line = Line(
-                    Point(offset_x, offset_y), 
-                    Point(offset_x, offset_y + scale))
+            line = Line( Point(ul.x, ul.y), Point(ul.x, lr.y))
             self.__window.draw_line(line, "black")
 
     def draw_move(self, other, undo = False): 
@@ -52,11 +60,9 @@ class Cell:
         self.__window.draw_line(line, color)
 
     def scaled_center(self):
-        offset_x = self.__location.x * self.__scale
-        offset_y = self.__location.y * self.__scale
         
-        return Point(offset_x + self.__scale // 2, 
-                     offset_y + self.__scale // 2)
+        return Point((self.__ul.x + self.__lr.x // 2), 
+                     (self.__ul.y + self.__lr.y // 2))
 
 
     def has_top(self, w=True):
