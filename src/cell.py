@@ -10,6 +10,16 @@ class Wall(Enum):
     BOTTOM = 2
     LEFT = 3
 
+    def opposite(self):
+        if self == Wall.TOP:
+            return Wall.BOTTOM
+        if self == Wall.BOTTOM:
+            return Wall.TOP
+        if self == Wall.LEFT:
+            return Wall.RIGHT
+        if self == Wall.RIGHT:
+            return Wall.LEFT
+
 class Cell:
     def __init__(self, location: Point, window: Window, scale = 25):
         self.__walls = [True, True, True, True]
