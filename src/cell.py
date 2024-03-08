@@ -11,32 +11,53 @@ class Wall(Enum):
     LEFT = 3
 
 class Cell:
-    def __init__(self, location: Point, window: Window):
+    def __init__(self, location: Point, window: Window, scale = 25):
         self.__walls = [True, True, True, True]
         self.__location = location
         self.__window = window
+        self.__scale = scale
 
-    def draw(self, scale = 25):
+    def draw(self):
+        scale = self.__scale
+        offset_x = self.__location.x * self.__scale
+        offset_y = self.__location.y * self.__scale
+
         if self.__walls[Wall.TOP.value]:
             line = Line(
-                    Point(self.__location.x, self.__location.y), 
-                    Point(self.__location.x + scale, self.__location.y))
+                    Point(offset_x, offset_y), 
+                    Point(offset_x + scale, offset_y))
             self.__window.draw_line(line, "black")
         if self.__walls[Wall.RIGHT.value]:
             line = Line(
-                    Point(self.__location.x + scale, self.__location.y), 
-                    Point(self.__location.x + scale, self.__location.y + scale))
+                    Point(offset_x + scale, offset_y), 
+                    Point(offset_x + scale, offset_y + scale))
             self.__window.draw_line(line, "black")
         if self.__walls[Wall.BOTTOM.value]:
             line = Line(
-                    Point(self.__location.x + scale, self.__location.y + scale), 
-                    Point(self.__location.x, self.__location.y + scale))
+                    Point(offset_x + scale, offset_y + scale), 
+                    Point(offset_x, offset_y + scale))
             self.__window.draw_line(line, "black")
         if self.__walls[Wall.LEFT.value]:
             line = Line(
-                    Point(self.__location.x, self.__location.y), 
-                    Point(self.__location.x, self.__location.y + scale))
+                    Point(offset_x, offset_y), 
+                    Point(offset_x, offset_y + scale))
             self.__window.draw_line(line, "black")
+
+    def draw_move(self, other, undo = False): 
+        color = "red"
+        if undo:
+            color = "gray"
+
+        line = Line(self.scaled_center(), other.scaled_center())
+        self.__window.draw_line(line, color)
+
+    def scaled_center(self):
+        offset_x = self.__location.x * self.__scale
+        offset_y = self.__location.y * self.__scale
+        
+        return Point(offset_x + self.__scale // 2, 
+                     offset_y + self.__scale // 2)
+
 
     def has_top(self, w=True):
         self.has_wall(Wall.TOP, w)

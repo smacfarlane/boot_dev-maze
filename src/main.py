@@ -8,19 +8,14 @@ def main():
     cell = Cell(Point(0,0), win)
     cell.draw()
 
-    cell = Cell(Point(10,0), win)
-    cell.draw()
+    cell2 = Cell(Point(10,0), win)
+    cell2.draw()
 
-    cell.draw(50)
+    cell3 = Cell(Point(0,10), win)
+    cell3.draw()
 
-    cell = Cell(Point(10, 10), win)
-    cell.draw()
-
-    cell = Cell(Point(20, 20), win)
-    cell.has_top(False)
-    cell.has_bottom(False)
-
-    cell.draw()
+    cell.draw_move(cell2)
+    cell2.draw_move(cell3, True)
 
     win.wait_for_close()
 
