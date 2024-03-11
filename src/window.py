@@ -1,5 +1,5 @@
 from tkinter import Tk, BOTH, Canvas
-from shapes import Line
+from shapes import Line, Point
 
 class Window:
     def __init__(self, width, height):
@@ -11,7 +11,7 @@ class Window:
         self.__root.protocol("WM_DELETE_WINDOW", self.close)
         
         self.__canvas = Canvas()
-        self.__canvas.pack()
+        self.__canvas.pack(expand=1, fill='both', padx=5, pady=5)
 
         self.__running = False
 
@@ -29,6 +29,9 @@ class Window:
 
     def draw_line(self, line: Line, color: str):
         line.draw(self.__canvas, color)
+
+    def draw_point(self, point: Point, color: str):
+        point.draw(self.__canvas, color)
 
 
 

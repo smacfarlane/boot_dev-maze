@@ -3,13 +3,11 @@ from shapes import Line, Point
 from maze import Maze
 
 def main():
-    win = Window(800,600)
+    win = Window(800,1440)
 
-    print(f"{win.width}, {win.height}")
-    maze = Maze(10, 12, win)
-    
+    maze = Maze(20, 30, win)
+    maze.solve()
 
-    print(f"{win.width}, {win.height}")
     win.wait_for_close()
 
 main()

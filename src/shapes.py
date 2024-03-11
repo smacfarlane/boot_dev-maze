@@ -9,6 +9,9 @@ class Point:
     def __repr__(self) -> str:
         return f"Point({self.x},{self.y})"
 
+    def draw(self, canvas: Canvas, color: str):
+        canvas.create_line(self.x, self.y, self.x, self.y, fill=color, width=3)
+
 class Line:
     def __init__(self, start: Point, end: Point):
         self.start = start

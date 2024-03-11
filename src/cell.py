@@ -28,7 +28,7 @@ class Cell:
         self.__rescale__(scale)
 
     def __repr__(self) -> str:
-        return f"Cell({self.__ul},{self.__lr})"
+        return f"Cell({self.__ul},{self.__lr}, {self.__walls})"
 
 
     def __rescale__(self,scale):
@@ -70,22 +70,23 @@ class Cell:
         self.__window.draw_line(line, color)
 
     def scaled_center(self):
-        
-        return Point((self.__ul.x + self.__lr.x // 2), 
-                     (self.__ul.y + self.__lr.y // 2))
+        return Point(self.__ul.x + ((self.__lr.x - self.__ul.x) // 2), 
+                     self.__ul.y + ((self.__lr.y - self.__ul.y) // 2))
 
 
     def has_top(self, w=True):
-        self.has_wall(Wall.TOP, w)
+        return self.has_wall(Wall.TOP, w)
 
     def has_left(self, w=True):
-        self.has_wall(Wall.LEFT, w)
+        return self.has_wall(Wall.LEFT, w)
     
     def has_right(self, w=True):
-        self.has_wall(Wall.RIGHT, w)
+        return self.has_wall(Wall.RIGHT, w)
    
     def has_bottom(self, w=True):
-        self.has_wall(Wall.BOTTOM, w)
+        return self.has_wall(Wall.BOTTOM, w)
 
-    def has_wall(self, wall: Wall, w: bool):
-        self.__walls[wall.value] = w
+    def has_wall(self, wall: Wall, w: bool | None = None):
+        if w is not None:
+            self.__walls[wall.value] = w
+        return self.__walls[wall.value]
